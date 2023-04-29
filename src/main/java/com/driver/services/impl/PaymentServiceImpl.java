@@ -24,7 +24,7 @@ public class PaymentServiceImpl implements PaymentService {
         //Note that the reservationId always exists
         String paymentMode=mode.toUpperCase();
         Payment payment;
-        if(paymentMode=="CASH"||paymentMode=="CARD"||paymentMode=="UPI")
+        if(paymentMode.equals("CASH")||paymentMode.equals("CARD")||paymentMode.equals("UPI"))
         {
             Reservation currentReservation=reservationRepository2.findById(reservationId).get();
             int reqAmount=currentReservation.getNumberOfHours()*currentReservation.getSpot().getPricePerHour();
