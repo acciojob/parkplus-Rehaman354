@@ -42,44 +42,29 @@ public class ReservationServiceImpl implements ReservationService {
         }
         newReservation.setUser(user);
         List<Spot> spots=parkingLot.getSpotList();
-        SpotType requiredSpotType=null;
-        if(numberOfWheels<=2) requiredSpotType=SpotType.TWO_WHEELER;
-        else if(numberOfWheels<=4) requiredSpotType=SpotType.FOUR_WHEELER;
-        else requiredSpotType=SpotType.OTHERS;
         Spot reservedSpot=null;
-        int minPrice=Integer.MAX_VALUE;
-        for(Spot spot:spots)
-        {
-            if(spot.getOccupied())continue;
-            int totalPrice=spot.getPricePerHour();
-            SpotType spotType=spot.getSpotType();
-            if(requiredSpotType==SpotType.OTHERS)
-            {
-                if(spotType==SpotType.OTHERS)
-                {
-                   if(totalPrice<minPrice)
-                   {
-                       reservedSpot=spot;
-                       minPrice=totalPrice;
-                   }
-                }
-            }
-            else if(requiredSpotType==SpotType.FOUR_WHEELER)
-            {
-                if(spotType==SpotType.FOUR_WHEELER||spotType==SpotType.OTHERS)
-                {
-                    if(totalPrice<minPrice)
-                    {
-                        reservedSpot=spot;
-                        minPrice=totalPrice;
+        int optimalPrice = Integer.MAX_VALUE;
+        for(Spot spot: spots){
+            if(!spot.getOccupied()){
+                if(spot.getSpotType().equals(SpotType.TWO_WHEELER)){
+                    if(numberOfWheels <= 2){
+                        if(optimalPrice > spot.getPricePerHour()){
+                            optimalPrice = spot.getPricePerHour();
+                            reservedSpot = spot;
+                        }
                     }
-                }
-            }
-            else {//if requires is two wheeler then we can place it in any spot
-                if(totalPrice<minPrice)
-                {
-                    reservedSpot=spot;
-                    minPrice=totalPrice;
+                } else if(spot.getSpotType().equals(SpotType.FOUR_WHEELER)){
+                    if(numberOfWheels <= 4){
+                        if(optimalPrice > spot.getPricePerHour()){
+                            optimalPrice = spot.getPricePerHour();
+                            reservedSpot= spot;
+                        }
+                    }
+                } else{
+                    if(optimalPrice > spot.getPricePerHour()){
+                        optimalPrice = spot.getPricePerHour();
+                        reservedSpot = spot;
+                    }
                 }
             }
         }
