@@ -26,6 +26,8 @@ public class ReservationServiceImpl implements ReservationService {
         //Reserve a spot in the given parkingLot such that the total price is minimum. Note that the price per hour for each spot is different
         //Note that the vehicle can only be parked in a spot having a type equal to or larger than given vehicle
         //If parkingLot is not found, user is not found, or no spot is available, throw "Cannot make reservation" exception.
+        Reservation newReservation=new Reservation();
+        newReservation.setNumberOfHours(timeInHours);
         ParkingLot parkingLot;
         try {
             parkingLot = parkingLotRepository3.findById(parkingLotId).get();
@@ -38,13 +40,14 @@ public class ReservationServiceImpl implements ReservationService {
         }catch (Exception e){
             throw new Exception("Cannot make reservation");
         }
+        newReservation.setUser(user);
         List<Spot> spots=parkingLot.getSpotList();
         SpotType requiredSpotType;
         if(numberOfWheels<=2) requiredSpotType=SpotType.TWO_WHEELER;
         else if(numberOfWheels<=4) requiredSpotType=SpotType.FOUR_WHEELER;
         else requiredSpotType=SpotType.OTHERS;
         Spot reservedSpot=null;
-        int maxPrice=Integer.MAX_VALUE;
+        int minPrice=Integer.MAX_VALUE;
         for(Spot spot:spots)
         {
             if(spot.getOccupied())continue;
@@ -54,10 +57,10 @@ public class ReservationServiceImpl implements ReservationService {
             {
                 if(spotType==SpotType.OTHERS)
                 {
-                   if(totalPrice<maxPrice)
+                   if(totalPrice<minPrice)
                    {
                        reservedSpot=spot;
-                       maxPrice=totalPrice;
+                       minPrice=totalPrice;
                    }
                 }
             }
@@ -65,24 +68,25 @@ public class ReservationServiceImpl implements ReservationService {
             {
                 if(spotType==SpotType.FOUR_WHEELER||spotType==SpotType.OTHERS)
                 {
-                    if(totalPrice<maxPrice)
+                    if(totalPrice<minPrice)
                     {
                         reservedSpot=spot;
-                        maxPrice=totalPrice;
+                        minPrice=totalPrice;
                     }
                 }
             }
             else {//if requires is two wheeler then we can place it in any spot
-                if(totalPrice<maxPrice)
+                if(totalPrice<minPrice)
                 {
                     reservedSpot=spot;
-                    maxPrice=totalPrice;
+                    minPrice=totalPrice;
                 }
             }
         }
         if(reservedSpot==null)
             throw new Exception("Cannot make reservation");
-        Reservation newReservation=new Reservation(timeInHours,reservedSpot,user);
+        newReservation.setSpot(reservedSpot);
+        user.getReservationList().add(newReservation);
         reservedSpot.setOccupied(true);
         reservedSpot.getReservationList().add(newReservation);
         spotRepository3.save(reservedSpot);
