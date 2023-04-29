@@ -32,12 +32,12 @@ public class PaymentServiceImpl implements PaymentService {
                 throw new Exception("Insufficient Amount");
             //prepare payment
             PaymentMode currentPaymentMode;
-            if(paymentMode=="CASH") currentPaymentMode=PaymentMode.CASH;
-            if(paymentMode=="CARD") currentPaymentMode=PaymentMode.CARD;
+            if(paymentMode.equals("CASH")) currentPaymentMode=PaymentMode.CASH;
+            else if(paymentMode.equals("CARD")) currentPaymentMode=PaymentMode.CARD;
             else currentPaymentMode=PaymentMode.UPI;
             payment=new Payment(true,currentPaymentMode,currentReservation);
             //before saving make spot occupied and add payment to reservation
-            currentReservation.getSpot().setOccupied(true);
+            currentReservation.getSpot().setOccupied(false);
             currentReservation.setPayment(payment);
             //save
             paymentRepository2.save(payment);
