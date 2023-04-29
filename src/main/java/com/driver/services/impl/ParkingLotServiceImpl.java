@@ -26,15 +26,17 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 
     @Override
     public Spot addSpot(int parkingLotId, Integer numberOfWheels, Integer pricePerHour) {
-        SpotType spotType;
-        if(numberOfWheels<=2) spotType=SpotType.TWO_WHEELER;
-        else if(numberOfWheels<=4) spotType=SpotType.FOUR_WHEELER;
-        else spotType=SpotType.OTHERS;
+        Spot spot=new Spot();
+        if(numberOfWheels<=2) spot.setSpotType(SpotType.TWO_WHEELER);
+        else if(numberOfWheels<=4) spot.setSpotType(SpotType.FOUR_WHEELER);
+        else spot.setSpotType(SpotType.OTHERS);
+        spot.setPricePerHour(pricePerHour);
         ParkingLot parkingLot=parkingLotRepository1.findById(parkingLotId).get();
-        Spot spot=new Spot(spotType,pricePerHour,parkingLot);
+        spot.setParkingLot(parkingLot);
+        spot.setOccupied(false);
         parkingLot.getSpotList().add(spot);
         parkingLotRepository1.save(parkingLot);
-        return spotRepository1.save(spot);
+        return spot;
     }
 
     @Override
@@ -44,15 +46,17 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 
     @Override
     public Spot updateSpot(int parkingLotId, int spotId, int pricePerHour) {
-        ParkingLot parkingLot = parkingLotRepository1.findById(parkingLotId).isPresent() ? parkingLotRepository1.findById(parkingLotId).get() : null;
-     if(parkingLot!=null) {
-         Spot spot=spotRepository1.findById(spotId).isPresent()?spotRepository1.findById(spotId).get():null;
-         if(parkingLot.getSpotList().contains(spot)) {
-             spot.setPricePerHour(pricePerHour);
-             return spotRepository1.save(spot);
-         }
-     }
-     return null;
+       ParkingLot parkingLot=parkingLotRepository1.findById(parkingLotId).get();
+       Spot updatedSpot = null;
+       for(Spot spot:parkingLot.getSpotList())
+       {
+           if(spot.getId()==spotId)
+           {
+              spot.setPricePerHour(pricePerHour);
+              updatedSpot=spotRepository1.save(spot);
+           }
+       }
+       return updatedSpot;
     }
 
     @Override
