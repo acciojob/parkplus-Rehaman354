@@ -42,7 +42,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
         newReservation.setUser(user);
         List<Spot> spots=parkingLot.getSpotList();
-        SpotType requiredSpotType;
+        SpotType requiredSpotType=null;
         if(numberOfWheels<=2) requiredSpotType=SpotType.TWO_WHEELER;
         else if(numberOfWheels<=4) requiredSpotType=SpotType.FOUR_WHEELER;
         else requiredSpotType=SpotType.OTHERS;
@@ -51,7 +51,7 @@ public class ReservationServiceImpl implements ReservationService {
         for(Spot spot:spots)
         {
             if(spot.getOccupied())continue;
-            int totalPrice=timeInHours*spot.getPricePerHour();
+            int totalPrice=spot.getPricePerHour();
             SpotType spotType=spot.getSpotType();
             if(requiredSpotType==SpotType.OTHERS)
             {
