@@ -37,7 +37,6 @@ public class PaymentServiceImpl implements PaymentService {
             else currentPaymentMode=PaymentMode.UPI;
             payment=new Payment(true,currentPaymentMode,currentReservation);
             //before saving make spot occupied and add payment to reservation
-            currentReservation.getSpot().setOccupied(false);
             currentReservation.setPayment(payment);
             //save
             paymentRepository2.save(payment);
