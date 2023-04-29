@@ -22,7 +22,7 @@ public class Spot {
 
     //constructors and getter and setters
 
-
+   public Spot(){}
     public Spot(SpotType spotType, int pricePerHour,ParkingLot parkingLot) {
         this.spotType = spotType;
         this.pricePerHour = pricePerHour;

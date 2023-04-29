@@ -20,7 +20,7 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Reservation> reservationList=new ArrayList<>();
     //constructors and getter and setters
-
+    public User(){}
 
     public User(String name, String phoneNumber, String password) {
         this.name = name;

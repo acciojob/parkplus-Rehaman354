@@ -19,7 +19,7 @@ public class Reservation {
     @OneToOne(mappedBy = "reservation",cascade = CascadeType.ALL)
     private Payment payment;
     //constructors and getter and setters
-
+    public Reservation(){}
     public Reservation(int numberOfHours, Spot spot, User user) {
         this.numberOfHours = numberOfHours;
         this.spot = spot;

@@ -16,7 +16,7 @@ public class Payment {
     private Reservation reservation;
     //constructors and getter and setters
 
-
+    public Payment(){}
     public Payment(boolean paymentCompleted, PaymentMode paymentMode, Reservation reservation) {
         this.paymentCompleted = paymentCompleted;
         this.paymentMode = paymentMode;
