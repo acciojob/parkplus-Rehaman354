@@ -18,15 +18,24 @@ public class Spot {
     @JoinColumn
     ParkingLot parkingLot;
     @OneToMany(mappedBy = "spot",cascade = CascadeType.ALL)
-    List<Reservation> reservationList=new ArrayList<>();
+    private List<Reservation> reservationList=new ArrayList<>();
 
     //constructors and getter and setters
-    Spot(){}
+
 
     public Spot(SpotType spotType, int pricePerHour,ParkingLot parkingLot) {
         this.spotType = spotType;
         this.pricePerHour = pricePerHour;
         this.parkingLot = parkingLot;
+    }
+
+    public Spot(int id, SpotType spotType, int pricePerHour, boolean occupied, ParkingLot parkingLot, List<Reservation> reservationList) {
+        this.id = id;
+        this.spotType = spotType;
+        this.pricePerHour = pricePerHour;
+        this.occupied = occupied;
+        this.parkingLot = parkingLot;
+        this.reservationList = reservationList;
     }
 
     public int getId() {
@@ -53,7 +62,7 @@ public class Spot {
         this.pricePerHour = pricePerHour;
     }
 
-    public boolean isOccupied() {
+    public boolean getOccupied() {
         return occupied;
     }
 

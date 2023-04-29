@@ -12,19 +12,26 @@ public class Reservation {
     //relations
     @ManyToOne
     @JoinColumn
-    Spot spot;
+    private Spot spot;
     @ManyToOne
     @JoinColumn
-    User user;
+    private User user;
     @OneToOne(mappedBy = "reservation",cascade = CascadeType.ALL)
-    Payment payment;
+    private Payment payment;
     //constructors and getter and setters
-    Reservation(){}
 
     public Reservation(int numberOfHours, Spot spot, User user) {
         this.numberOfHours = numberOfHours;
         this.spot = spot;
         this.user = user;
+    }
+
+    public Reservation(int id, int numberOfHours, Spot spot, User user, Payment payment) {
+        this.id = id;
+        this.numberOfHours = numberOfHours;
+        this.spot = spot;
+        this.user = user;
+        this.payment = payment;
     }
 
     public int getId() {
@@ -66,4 +73,5 @@ public class Reservation {
     public void setPayment(Payment payment) {
         this.payment = payment;
     }
+
 }

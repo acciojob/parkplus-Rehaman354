@@ -14,12 +14,19 @@ public class ParkingLot {
     private String address;
      //relations
     @OneToMany(mappedBy = "parkingLot",cascade = CascadeType.ALL)
-     List<Spot> spotList=new ArrayList<>();
-    ParkingLot(){}
+     private List<Spot> spotList=new ArrayList<>();
+
 
     public ParkingLot(String name, String address) {
         this.name = name;
         this.address = address;
+    }
+
+    public ParkingLot(int id, String name, String address, List<Spot> spotList) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.spotList = spotList;
     }
 
     public int getId() {

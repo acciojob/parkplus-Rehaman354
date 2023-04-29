@@ -13,11 +13,18 @@ public class Payment {
     //relations
     @OneToOne
     @JoinColumn
-    Reservation reservation;
+    private Reservation reservation;
     //constructors and getter and setters
-    Payment(){}
+
 
     public Payment(boolean paymentCompleted, PaymentMode paymentMode, Reservation reservation) {
+        this.paymentCompleted = paymentCompleted;
+        this.paymentMode = paymentMode;
+        this.reservation = reservation;
+    }
+
+    public Payment(int id, boolean paymentCompleted, PaymentMode paymentMode, Reservation reservation) {
+        this.id = id;
         this.paymentCompleted = paymentCompleted;
         this.paymentMode = paymentMode;
         this.reservation = reservation;
